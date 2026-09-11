@@ -129,7 +129,7 @@ function AppContent() {
     }
   };
 
-  const showBottomNav = currentUser && !['login', 'register', 'admin', 'landing'].includes(currentView);
+  const showBottomNav = currentUser && !['login', 'register', 'admin', 'landing', 'dashboard'].includes(currentView);
 
   return (
     <div className="min-h-screen bg-[#F4F8F5] text-[#0F2D1F] selection:bg-[#006A4E] selection:text-white font-sans antialiased transition-colors duration-200">
