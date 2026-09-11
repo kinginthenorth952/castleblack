@@ -21,7 +21,7 @@ export function Header({
   // If on dashboard, render standard dashboard header
   if (currentView === 'dashboard') {
     return (
-      <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-[#FDFBF7]/90 border-b border-[#EADCC9] shadow-xs transition-colors duration-200">
+      <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-[#F4F8F5]/90 border-b border-[#D1E7DD] shadow-xs transition-colors duration-200">
         <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
           {/* Logo & Brand */}
           <div 
@@ -30,11 +30,11 @@ export function Header({
           >
             <PrimeInvestLogo size="sm" customLogoUrl={settings?.logoUrl} />
             <div>
-              <span className="font-extrabold text-base tracking-tight text-[#3C3024] group-hover:text-[#D09009] transition">
-                {settings?.siteName || 'Prime Invest'}
+              <span className="font-extrabold text-base tracking-tight text-[#0F2D1F] group-hover:text-[#006A4E] transition">
+                {settings?.siteName || 'Sikka Poultry Farm'}
               </span>
-              <span className="block text-[10px] text-[#8C7A6B] uppercase tracking-widest font-mono font-bold -mt-0.5">
-                {settings?.siteSubtitle || 'Wealth & Growth Partner'}
+              <span className="block text-[10px] text-[#5E7E6F] uppercase tracking-widest font-mono font-bold -mt-0.5">
+                {settings?.siteSubtitle || 'Agricultural Livestock & Savings Schemes'}
               </span>
             </div>
           </div>
@@ -44,20 +44,20 @@ export function Header({
             {/* Notification Bell */}
             <button
               onClick={() => setShowNotifications(!showNotifications)}
-              className="relative p-2 rounded-xl border border-[#EADCC9] bg-white/80 text-[#8C7A6B] hover:text-[#3C3024] hover:bg-[#FCF8F2] shadow-xs transition"
+              className="relative p-2 rounded-xl border border-[#D1E7DD] bg-white/80 text-[#5E7E6F] hover:text-[#0F2D1F] hover:bg-[#EBF5F0] shadow-xs transition"
               aria-label="Notifications"
             >
-              <Bell className="w-4 h-4 text-[#D09009]" />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-[#D09009]"></span>
+              <Bell className="w-4 h-4 text-[#006A4E]" />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-[#006A4E]"></span>
             </button>
 
             {/* Menu Toggle */}
             <button
               onClick={() => setShowMenu(!showMenu)}
-              className="p-2 rounded-xl border border-[#EADCC9] bg-white/80 text-[#8C7A6B] hover:text-[#3C3024] hover:bg-[#FCF8F2] shadow-xs transition"
+              className="p-2 rounded-xl border border-[#D1E7DD] bg-white/80 text-[#5E7E6F] hover:text-[#0F2D1F] hover:bg-[#EBF5F0] shadow-xs transition"
               aria-label="Navigation Menu"
             >
-              {showMenu ? <X className="w-4 h-4 text-[#3C3024]" /> : <Menu className="w-4 h-4 text-[#3C3024]" />}
+              {showMenu ? <X className="w-4 h-4 text-[#0F2D1F]" /> : <Menu className="w-4 h-4 text-[#0F2D1F]" />}
             </button>
           </div>
         </div>
@@ -145,30 +145,30 @@ export function Header({
 
   // Inner Views Header
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-[#FDFBF7]/90 border-b border-[#EADCC9] shadow-xs transition-colors duration-200">
+    <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-[#F4F8F5]/90 border-b border-[#D1E7DD] shadow-xs transition-colors duration-200">
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Back Button */}
         {showBack ? (
           <button
             onClick={() => setCurrentView('dashboard')}
-            className="w-10 h-10 rounded-xl border border-[#EADCC9] bg-white/90 text-[#3C3024] hover:bg-[#FCF8F2] flex items-center justify-center transition shadow-xs"
+            className="w-10 h-10 rounded-xl border border-[#D1E7DD] bg-white/90 text-[#0F2D1F] hover:bg-[#EBF5F0] flex items-center justify-center transition shadow-xs"
             aria-label="Go Back"
           >
-            <ArrowLeft className="w-4 h-4 text-[#3C3024]" />
+            <ArrowLeft className="w-4 h-4 text-[#0F2D1F]" />
           </button>
         ) : (
           <div className="w-10" />
         )}
 
         {/* Center Pill Badge */}
-        <div className="flex items-center gap-2.5 px-4 py-1.5 rounded-xl border border-[#EADCC9] bg-white/90 backdrop-blur-md shadow-xs">
+        <div className="flex items-center gap-2.5 px-4 py-1.5 rounded-xl border border-[#D1E7DD] bg-white/90 backdrop-blur-md shadow-xs">
           <PrimeInvestLogo size="sm" customLogoUrl={settings?.logoUrl} />
           <div className="text-left">
-            <h1 className="text-xs sm:text-sm font-bold leading-tight text-[#3C3024]">
-              {title || settings?.siteName || 'Prime Invest'}
+            <h1 className="text-xs sm:text-sm font-bold leading-tight text-[#0F2D1F]">
+              {title || settings?.siteName || 'Sikka Poultry Farm'}
             </h1>
             {subtitle && (
-              <p className="text-[10px] font-semibold leading-none text-[#8C7A6B]">
+              <p className="text-[10px] font-semibold leading-none text-[#5E7E6F]">
                 {subtitle}
               </p>
             )}
@@ -180,25 +180,25 @@ export function Header({
           {rightAction === 'history' && (
             <button
               onClick={() => setCurrentView('deposit-history')}
-              className="w-10 h-10 rounded-xl border border-[#EADCC9] bg-white/90 text-[#8C7A6B] hover:text-[#3C3024] hover:bg-[#FCF8F2] flex items-center justify-center transition shadow-xs"
+              className="w-10 h-10 rounded-xl border border-[#D1E7DD] bg-white/90 text-[#5E7E6F] hover:text-[#0F2D1F] hover:bg-[#EBF5F0] flex items-center justify-center transition shadow-xs"
               title="Payment History"
             >
-              <Clock className="w-4 h-4 text-[#D09009]" />
+              <Clock className="w-4 h-4 text-[#006A4E]" />
             </button>
           )}
           {rightAction === 'profile' && (
             <button
               onClick={() => setCurrentView('profile')}
-              className="w-10 h-10 rounded-xl border border-[#EADCC9] bg-white/90 text-[#8C7A6B] hover:text-[#3C3024] hover:bg-[#FCF8F2] flex items-center justify-center transition shadow-xs"
+              className="w-10 h-10 rounded-xl border border-[#D1E7DD] bg-white/90 text-[#5E7E6F] hover:text-[#0F2D1F] hover:bg-[#EBF5F0] flex items-center justify-center transition shadow-xs"
               title="My Profile"
             >
-              <UserIcon className="w-4 h-4 text-[#D09009]" />
+              <UserIcon className="w-4 h-4 text-[#006A4E]" />
             </button>
           )}
           {rightAction === 'add' && (
             <button
               onClick={() => setCurrentView('plans')}
-              className="w-10 h-10 rounded-xl bg-gradient-to-r from-[#F5BE27] to-[#D09009] hover:from-[#F7C63D] hover:to-[#B87D05] flex items-center justify-center text-white shadow-md shadow-[#D09009]/20 hover:scale-105 transition font-bold text-lg"
+              className="w-10 h-10 rounded-xl bg-gradient-to-r from-[#008260] to-[#006A4E] hover:from-[#0A8F6A] hover:to-[#044E29] flex items-center justify-center text-white shadow-md shadow-[#006A4E]/20 hover:scale-105 transition font-bold text-lg"
               title="Buy Plan"
             >
               +

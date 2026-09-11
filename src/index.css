@@ -4,51 +4,55 @@
 html,
 body,
 [data-theme] {
-  /* Eye-Friendly Warm Cream & Gold Theme - Soft, low-glare, non-stark ivory palette */
-  --color-bg-canvas: #FDFBF7;
+  /* National Savings & Sikka Poultry Farm - Prestige Emerald Green, Sovereign Gold & Pure White Palette */
+  --color-bg-canvas: #F4F8F5;
   --color-bg-surface: #FFFFFF;
-  --color-bg-elevated: #FCF8F2;
-  --color-bg-accent-subtle: #F6EFE6;
+  --color-bg-elevated: #EBF5F0;
+  --color-bg-accent-subtle: #E1EFE8;
 
-  --color-text-primary: #3C3024;
-  --color-text-secondary: #6B5B4E;
-  --color-text-tertiary: #8C7A6B;
-  --color-text-muted: #A89B8D;
-  --color-text-disabled: #C4B9AD;
+  --color-text-primary: #0F2D1F;
+  --color-text-secondary: #224936;
+  --color-text-tertiary: #3D6652;
+  --color-text-muted: #5E7E6F;
+  --color-text-disabled: #A5BAAE;
 
-  --color-accent-primary: #D09009;
-  --color-accent-hover: #F5BE27;
+  --color-accent-primary: #006A4E;
+  --color-accent-hover: #008260;
   --color-accent-contrast: #FFFFFF;
-  --color-accent: #D09009;
-  --color-accent-dark: #A46F04;
-  --color-accent-muted: #FEF8E8;
+  --color-accent: #006A4E;
+  --color-accent-dark: #044E29;
+  --color-accent-muted: #ECFDF5;
 
-  --color-border: #EADCC9;
-  --color-border-subtle: #F2E8DA;
-  --color-border-prominent: #DDD3C4;
-  --color-border-strong: #C8BBA9;
+  --color-gold-accent: #D4AF37;
+  --color-gold-hover: #F59E0B;
+  --color-gold-dark: #B45309;
 
-  --color-status-success: #15803D;
-  --color-status-success-bg: #F0FDF4;
-  --color-status-warning: #D09009;
-  --color-status-warning-bg: #FEF8E8;
+  --color-border: #D1E7DD;
+  --color-border-subtle: #E2F0E8;
+  --color-border-prominent: #B7D9C9;
+  --color-border-strong: #96C4AD;
+
+  --color-status-success: #006A4E;
+  --color-status-success-bg: #ECFDF5;
+  --color-status-warning: #D97706;
+  --color-status-warning-bg: #FFFBEB;
   --color-status-danger: #B91C1C;
   --color-status-danger-bg: #FEF2F2;
   --color-status-error: #B91C1C;
   --color-status-error-bg: #FEF2F2;
-  --color-status-info: #B87D05;
-  --color-status-info-bg: #FEF8E8;
+  --color-status-info: #0284C7;
+  --color-status-info-bg: #F0F9FF;
 
   /* Legacy variable mappings */
-  --color-bg-primary: #FDFBF7;
+  --color-bg-primary: #F4F8F5;
   --color-bg-secondary: #FFFFFF;
   --color-surface: #FFFFFF;
-  --color-surface-elevated: #FCF8F2;
-  --color-surface-hover: #F6EFE6;
-  --color-surface-card-hover: #F6EFE6;
+  --color-surface-elevated: #EBF5F0;
+  --color-surface-hover: #E1EFE8;
+  --color-surface-card-hover: #E1EFE8;
 
-  --shadow-luxury-subtle: 0 2px 10px -2px rgba(60, 48, 36, 0.05), 0 1px 3px rgba(60, 48, 36, 0.03);
-  --shadow-luxury-elevated: 0 10px 25px -5px rgba(60, 48, 36, 0.08), 0 4px 10px rgba(60, 48, 36, 0.04);
+  --shadow-luxury-subtle: 0 2px 10px -2px rgba(0, 106, 78, 0.06), 0 1px 3px rgba(0, 106, 78, 0.04);
+  --shadow-luxury-elevated: 0 10px 25px -5px rgba(0, 106, 78, 0.1), 0 4px 10px rgba(0, 106, 78, 0.05);
 }
 
 @theme {
@@ -91,8 +95,8 @@ body,
   }
 
   body {
-    background-color: #FDFBF7;
-    color: #3C3024;
+    background-color: #F4F8F5;
+    color: #0F2D1F;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
     letter-spacing: -0.011em;
     -webkit-font-smoothing: antialiased;
@@ -102,24 +106,24 @@ body,
   }
 
   ::selection {
-    background-color: #F5BE27;
-    color: #3C3024;
+    background-color: #006A4E;
+    color: #FFFFFF;
   }
 
-  /* Custom minimal warm scrollbar */
+  /* Custom minimal emerald scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #FDFBF7;
+    background: #F4F8F5;
   }
   ::-webkit-scrollbar-thumb {
-    background: #EADCC9;
+    background: #B7D9C9;
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #DDD3C4;
+    background: #006A4E;
   }
 }
 
@@ -141,107 +145,125 @@ body,
 
 /* Luxury button styling */
 .btn-gold,
-.btn-sapphire {
-  background-color: #D09009;
+.btn-sapphire,
+.btn-emerald {
+  background-color: #006A4E;
+  background-image: linear-gradient(135deg, #006A4E 0%, #087A5B 100%);
   color: #FFFFFF !important;
   font-weight: 700;
   transition: all 180ms ease;
-  box-shadow: 0 4px 12px rgba(208, 144, 9, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 106, 78, 0.28);
 }
 .btn-gold:hover,
-.btn-sapphire:hover {
-  background-color: #F5BE27;
-  box-shadow: 0 6px 16px rgba(245, 190, 39, 0.35);
+.btn-sapphire:hover,
+.btn-emerald:hover {
+  background-color: #008260;
+  background-image: linear-gradient(135deg, #008260 0%, #0A8F6A 100%);
+  box-shadow: 0 6px 18px rgba(0, 106, 78, 0.38);
 }
 .btn-gold:active,
-.btn-sapphire:active {
-  background-color: #A46F04;
+.btn-sapphire:active,
+.btn-emerald:active {
+  background-color: #044E29;
+}
+
+.btn-sovereign-gold {
+  background-color: #D4AF37;
+  background-image: linear-gradient(135deg, #D4AF37 0%, #F59E0B 100%);
+  color: #0F2D1F !important;
+  font-weight: 800;
+  transition: all 180ms ease;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+}
+.btn-sovereign-gold:hover {
+  background-image: linear-gradient(135deg, #F59E0B 0%, #D4AF37 100%);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.45);
 }
 
 .btn-secondary {
   background-color: #FFFFFF;
-  color: #3C3024;
-  border: 1px solid #EADCC9;
+  color: #0F2D1F;
+  border: 1px solid #D1E7DD;
   font-weight: 600;
   transition: all 180ms ease;
 }
 .btn-secondary:hover {
-  background-color: #FCF8F2;
-  border-color: #DDD3C4;
+  background-color: #EBF5F0;
+  border-color: #B7D9C9;
 }
 
 .btn-ghost {
   background-color: transparent;
-  color: #3C3024;
+  color: #0F2D1F;
   transition: all 180ms ease;
 }
 .btn-ghost:hover {
-  background-color: #FCF8F2;
-  color: #D09009;
+  background-color: #EBF5F0;
+  color: #006A4E;
 }
 
 /* Cards & Surfaces */
 .luxury-card {
   background-color: #FFFFFF;
-  border: 1px solid #EADCC9;
-  color: #3C3024;
-  box-shadow: 0 2px 10px -2px rgba(60, 48, 36, 0.05);
+  border: 1px solid #D1E7DD;
+  color: #0F2D1F;
+  box-shadow: 0 2px 10px -2px rgba(0, 106, 78, 0.06);
   transition: background-color 250ms cubic-bezier(0.16, 1, 0.3, 1),
               border-color 250ms cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 250ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .luxury-card:hover {
   background-color: #FFFFFF;
-  border-color: #DDD3C4;
-  box-shadow: 0 6px 18px -3px rgba(60, 48, 36, 0.08);
+  border-color: #B7D9C9;
+  box-shadow: 0 6px 18px -3px rgba(0, 106, 78, 0.1);
 }
 
 .luxury-elevated {
-  background-color: #FCF8F2;
-  border: 1px solid #EADCC9;
-  box-shadow: 0 1px 4px rgba(60, 48, 36, 0.04);
+  background-color: #EBF5F0;
+  border: 1px solid #D1E7DD;
+  box-shadow: 0 1px 4px rgba(0, 106, 78, 0.04);
 }
 
 /* Inputs */
 .luxury-input {
   background-color: #FFFFFF;
-  border: 1px solid #EADCC9;
-  color: #3C3024;
+  border: 1px solid #D1E7DD;
+  color: #0F2D1F;
   transition: background-color 200ms ease,
               border-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .luxury-input::placeholder {
-  color: #8C7A6B;
+  color: #5E7E6F;
   opacity: 0.8;
 }
 .luxury-input:hover {
-  border-color: #DDD3C4;
+  border-color: #B7D9C9;
 }
 .luxury-input:focus {
   outline: none;
-  border-color: #D09009;
-  box-shadow: 0 0 0 3px rgba(208, 144, 9, 0.15);
+  border-color: #006A4E;
+  box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.15);
 }
 
 /* Badges */
 .badge-gold,
 .badge-sapphire {
-  background-color: #FEF8E8;
-  border: 1px solid rgba(208, 144, 9, 0.3);
-  color: #D09009;
+  background-color: #ECFDF5;
+  border: 1px solid rgba(0, 106, 78, 0.3);
+  color: #006A4E;
   font-weight: 700;
 }
 .badge-success {
-  background-color: #F0FDF4;
-  border: 1px solid rgba(21, 128, 61, 0.3);
-  color: #15803D;
+  background-color: #ECFDF5;
+  border: 1px solid rgba(0, 106, 78, 0.3);
+  color: #006A4E;
   font-weight: 700;
 }
 .badge-warning {
-  background-color: #FEF8E8;
-  border: 1px solid rgba(208, 144, 9, 0.3);
-  color: #D09009;
+  background-color: #FFFBEB;
+  border: 1px solid rgba(217, 119, 6, 0.3);
+  color: #D97706;
   font-weight: 700;
 }
 .badge-error {
@@ -251,8 +273,8 @@ body,
   font-weight: 700;
 }
 .badge-info {
-  background-color: #FEF8E8;
-  border: 1px solid rgba(208, 144, 9, 0.3);
-  color: #B87D05;
+  background-color: #F0F9FF;
+  border: 1px solid rgba(2, 132, 199, 0.3);
+  color: #0284C7;
   font-weight: 700;
 }

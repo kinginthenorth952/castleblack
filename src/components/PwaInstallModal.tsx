@@ -9,7 +9,7 @@ interface PwaInstallModalProps {
   logoUrl?: string;
 }
 
-export function PwaInstallModal({ isOpen, onClose, siteName = 'SarmayaXProfit', logoUrl }: PwaInstallModalProps) {
+export function PwaInstallModal({ isOpen, onClose, siteName = 'Sikka Poultry Farm', logoUrl }: PwaInstallModalProps) {
   const [platformTab, setPlatformTab] = useState<'android' | 'ios'>('android');
 
   if (!isOpen) return null;

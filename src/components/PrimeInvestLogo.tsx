@@ -4,8 +4,8 @@ export function PrimeInvestLogo({
   customLogoUrl
 }: { 
   size?: 'sm' | 'md' | 'lg' | 'xl'; 
-  className?: string;
-  customLogoUrl?: string;
+  className?: string; 
+  customLogoUrl?: string; 
 }) {
   const sizeMap = {
     sm: 'w-8 h-8',
@@ -19,10 +19,9 @@ export function PrimeInvestLogo({
       <div className={`relative flex items-center justify-center shrink-0 ${sizeMap[size]} ${className}`}>
         <img 
           src={customLogoUrl} 
-          alt="Site Logo" 
+          alt="Sikka Poultry Farm Logo" 
           className="w-full h-full object-contain rounded-2xl drop-shadow-md"
           onError={(e) => {
-            // fallback if custom image fails to load
             (e.currentTarget as HTMLElement).style.display = 'none';
           }}
         />
@@ -32,25 +31,69 @@ export function PrimeInvestLogo({
 
   return (
     <div className={`relative flex items-center justify-center shrink-0 ${sizeMap[size]} ${className}`}>
-      {/* Subtle metallic frame */}
-      <div className="relative w-full h-full rounded-xl p-[1px] bg-gradient-to-b from-[#D6B36A]/40 via-[#252B33] to-[#1D232A] shadow-md shadow-black/40">
-        <div className="w-full h-full rounded-[11px] bg-[#11151A] flex items-center justify-center overflow-hidden border border-[#252B33]">
-          <svg viewBox="0 0 100 100" className="w-3/5 h-3/5">
+      {/* National Savings Emerald Green & Sovereign Gold Emblem */}
+      <div className="relative w-full h-full rounded-xl p-[1.5px] bg-gradient-to-b from-[#D4AF37] via-[#006A4E] to-[#044E29] shadow-md shadow-[#006A4E]/25">
+        <div className="w-full h-full rounded-[10px] bg-[#044E29] flex items-center justify-center overflow-hidden border border-[#087A5B]">
+          <svg viewBox="0 0 100 100" className="w-4/5 h-4/5">
             <defs>
-              <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#E5C783" />
-                <stop offset="50%" stopColor="#D6B36A" />
-                <stop offset="100%" stopColor="#A88745" />
+              <linearGradient id="sikkaGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FDE68A" />
+                <stop offset="40%" stopColor="#F59E0B" />
+                <stop offset="80%" stopColor="#D97706" />
+                <stop offset="100%" stopColor="#B45309" />
+              </linearGradient>
+              <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#10B981" />
+                <stop offset="50%" stopColor="#059669" />
+                <stop offset="100%" stopColor="#044E29" />
               </linearGradient>
             </defs>
-            {/* Elegant Geometric Emblem */}
-            <polygon points="50,10 85,28 85,72 50,90 15,72 15,28" fill="none" stroke="url(#goldGrad)" strokeWidth="3" />
-            <polygon points="50,18 78,32 78,68 50,82 22,68 22,32" fill="#171C22" stroke="#252B33" strokeWidth="1" />
-            
-            {/* Geometric Growth Symbol */}
-            <path d="M32,60 L42,46 L50,54 L58,46 L68,60 Z" fill="url(#goldGrad)" opacity="0.9" />
-            <path d="M30,58 L45,43 L55,51 L70,36" fill="none" stroke="#E5C783" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-            <polygon points="70,32 73,39 65,37" fill="#E5C783" />
+
+            {/* Shield Frame */}
+            <path 
+              d="M50,8 L84,22 L84,54 C84,72 68,88 50,94 C32,88 16,72 16,54 L16,22 Z" 
+              fill="url(#emeraldGrad)" 
+              stroke="url(#sikkaGoldGrad)" 
+              strokeWidth="2.5" 
+            />
+
+            {/* Inner Shield Accent */}
+            <path 
+              d="M50,15 L78,26 L78,52 C78,67 65,81 50,86 C35,81 22,67 22,52 L22,26 Z" 
+              fill="#064E3B" 
+              opacity="0.85" 
+            />
+
+            {/* Golden Star at Apex */}
+            <polygon 
+              points="50,18 52,24 58,24 53,28 55,34 50,30 45,34 47,28 42,24 48,24" 
+              fill="url(#sikkaGoldGrad)" 
+            />
+
+            {/* Stylized Poultry Rooster & Agro Growth Silhouette */}
+            {/* Rooster Comb */}
+            <path 
+              d="M48,34 C48,32 50,31 52,32 C54,30 57,32 57,34 C59,33 61,35 60,37 L48,37 Z" 
+              fill="url(#sikkaGoldGrad)" 
+            />
+            {/* Rooster Head & Beak */}
+            <path 
+              d="M47,37 Q55,37 57,41 Q62,41 64,43 Q60,45 57,46 Q56,53 49,55 Q43,53 43,45 Q43,39 47,37 Z" 
+              fill="url(#sikkaGoldGrad)" 
+            />
+            {/* Eye */}
+            <circle cx="52" cy="41" r="1.5" fill="#044E29" />
+            {/* Wattle */}
+            <path d="M54,46 C55,49 53,51 51,50 Z" fill="#EF4444" />
+
+            {/* Twin Golden Wheat Ears (National Savings Symbolism) */}
+            {/* Left Wheat */}
+            <path d="M30,52 Q32,58 35,62 M28,55 Q34,56 36,60 M27,61 Q34,62 38,65 M38,65 Q45,74 50,78" fill="none" stroke="url(#sikkaGoldGrad)" strokeWidth="1.5" strokeLinecap="round" />
+            {/* Right Wheat */}
+            <path d="M70,52 Q68,58 65,62 M72,55 Q66,56 64,60 M73,61 Q66,62 62,65 M62,65 Q55,74 50,78" fill="none" stroke="url(#sikkaGoldGrad)" strokeWidth="1.5" strokeLinecap="round" />
+
+            {/* Center Growth Ribbons */}
+            <path d="M42,67 L50,60 L58,67 L50,73 Z" fill="url(#sikkaGoldGrad)" />
           </svg>
         </div>
       </div>
@@ -58,8 +101,9 @@ export function PrimeInvestLogo({
   );
 }
 
-export const TradeApexLogo = PrimeInvestLogo;
+export const SikkaPoultryFarmLogo = PrimeInvestLogo;
 export const SarmayaXProfitLogo = PrimeInvestLogo;
+export const TradeApexLogo = PrimeInvestLogo;
 
 export function EasypaisaLogo({ className = 'w-6 h-6' }: { className?: string }) {
   return (

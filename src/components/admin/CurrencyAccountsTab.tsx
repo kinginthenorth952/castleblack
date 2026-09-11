@@ -505,7 +505,7 @@ export const CurrencyAccountsTab: React.FC = () => {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. SARMAYA X PROFIT OFFICIAL"
+                  placeholder="e.g. SIKKA POULTRY FARM OFFICIAL"
                   value={accountTitle}
                   onChange={(e) => setAccountTitle(e.target.value)}
                   className="w-full px-3 py-2 rounded-xl bg-[#161B22] border border-[#252B33] text-xs text-[#F4F1EA] focus:outline-none focus:border-[#D6B36A]"

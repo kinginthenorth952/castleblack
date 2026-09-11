@@ -20,20 +20,20 @@ export function BottomNav() {
   return (
     <>
       <div className="fixed bottom-0 inset-x-0 z-40 max-w-md mx-auto pointer-events-none pb-2 sm:pb-3 px-3 sm:px-4">
-        <div className="pointer-events-auto relative w-full h-16 rounded-2xl backdrop-blur-2xl bg-white/95 border border-[#EADCC9] shadow-xl shadow-[#3C3024]/10 text-[#3C3024] flex items-center justify-around px-2 transition-all duration-300">
+        <div className="pointer-events-auto relative w-full h-16 rounded-2xl backdrop-blur-2xl bg-white/95 border border-[#D1E7DD] shadow-xl shadow-[#006A4E]/10 text-[#0F2D1F] flex items-center justify-around px-2 transition-all duration-300">
           {/* Home */}
           <button
             onClick={() => setCurrentView('dashboard')}
             className={`flex flex-col items-center justify-center min-w-[52px] h-12 rounded-xl transition duration-200 relative ${
               currentView === 'dashboard'
-                ? 'text-[#D09009] font-bold bg-[#FCF8F2] shadow-xs'
-                : 'text-[#8C7A6B] hover:text-[#3C3024] hover:bg-[#FCF8F2]'
+                ? 'text-[#006A4E] font-bold bg-[#EBF5F0] shadow-xs'
+                : 'text-[#5E7E6F] hover:text-[#0F2D1F] hover:bg-[#EBF5F0]'
             }`}
           >
             <Home className="w-4 h-4" />
             <span className="text-[10px] tracking-tight mt-0.5">Home</span>
             {currentView === 'dashboard' && (
-              <span className="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-[#D09009]" />
+              <span className="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-[#006A4E]" />
             )}
           </button>
 
@@ -42,14 +42,14 @@ export function BottomNav() {
             onClick={() => setCurrentView('plans')}
             className={`flex flex-col items-center justify-center min-w-[52px] h-12 rounded-xl transition duration-200 relative ${
               currentView === 'plans'
-                ? 'text-[#D09009] font-bold bg-[#FCF8F2] shadow-xs'
-                : 'text-[#8C7A6B] hover:text-[#3C3024] hover:bg-[#FCF8F2]'
+                ? 'text-[#006A4E] font-bold bg-[#EBF5F0] shadow-xs'
+                : 'text-[#5E7E6F] hover:text-[#0F2D1F] hover:bg-[#EBF5F0]'
             }`}
           >
             <Layers className="w-4 h-4" />
             <span className="text-[10px] tracking-tight mt-0.5">Plans</span>
             {currentView === 'plans' && (
-              <span className="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-[#D09009]" />
+              <span className="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-[#006A4E]" />
             )}
           </button>
 
@@ -57,12 +57,12 @@ export function BottomNav() {
           <div className="-mt-6">
             <button
               onClick={() => setShowQuickSheet(true)}
-              className="group relative p-1 rounded-2xl bg-gradient-to-b from-[#F5BE27] to-[#D09009] shadow-lg shadow-[#D09009]/30 transition transform hover:scale-105 active:scale-95 flex items-center justify-center"
+              className="group relative p-1 rounded-2xl bg-gradient-to-b from-[#008260] to-[#006A4E] shadow-lg shadow-[#006A4E]/30 transition transform hover:scale-105 active:scale-95 flex items-center justify-center"
               title="Open Quick Utilities"
             >
               <div className="relative">
                 <PrimeInvestLogo size="md" customLogoUrl={settings?.logoUrl} />
-                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#FDFBF7] border border-[#D09009] flex items-center justify-center text-[8px] font-bold text-[#D09009]">
+                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#F4F8F5] border border-[#006A4E] flex items-center justify-center text-[8px] font-bold text-[#006A4E]">
                   <Plus className="w-2.5 h-2.5" />
                 </span>
               </div>
@@ -74,15 +74,15 @@ export function BottomNav() {
             onClick={() => setCurrentView('tasks')}
             className={`flex flex-col items-center justify-center min-w-[52px] h-12 rounded-xl transition duration-200 relative ${
               currentView === 'tasks'
-                ? 'text-[#D09009] font-bold bg-[#FCF8F2] shadow-xs'
-                : 'text-[#8C7A6B] hover:text-[#3C3024] hover:bg-[#FCF8F2]'
+                ? 'text-[#006A4E] font-bold bg-[#EBF5F0] shadow-xs'
+                : 'text-[#5E7E6F] hover:text-[#0F2D1F] hover:bg-[#EBF5F0]'
             }`}
             title="Daily Tasks & Earnings"
           >
             <PlayCircle className="w-4 h-4" />
             <span className="text-[10px] tracking-tight mt-0.5">Tasks</span>
             {currentView === 'tasks' && (
-              <span className="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-[#D09009]" />
+              <span className="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-[#006A4E]" />
             )}
           </button>
 
@@ -91,14 +91,14 @@ export function BottomNav() {
             onClick={() => setCurrentView('profile')}
             className={`flex flex-col items-center justify-center min-w-[52px] h-12 rounded-xl transition duration-200 relative ${
               currentView === 'profile'
-                ? 'text-[#D09009] font-bold bg-[#FCF8F2] shadow-xs'
-                : 'text-[#8C7A6B] hover:text-[#3C3024] hover:bg-[#FCF8F2]'
+                ? 'text-[#006A4E] font-bold bg-[#EBF5F0] shadow-xs'
+                : 'text-[#5E7E6F] hover:text-[#0F2D1F] hover:bg-[#EBF5F0]'
             }`}
           >
             <User className="w-4 h-4" />
             <span className="text-[10px] tracking-tight mt-0.5">Profile</span>
             {currentView === 'profile' && (
-              <span className="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-[#D09009]" />
+              <span className="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-[#006A4E]" />
             )}
           </button>
         </div>

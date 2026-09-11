@@ -51,7 +51,7 @@ export function DashboardView() {
 
   const referralUrl = typeof window !== 'undefined' 
     ? `${window.location.origin}?ref=${currentUser?.username || 'user'}`
-    : `https://trade-apex.xyz?ref=${currentUser?.username || 'user'}`;
+    : `https://sikkapoultryfarm.com?ref=${currentUser?.username || 'user'}`;
 
   const handleCopyReferral = () => {
     navigator.clipboard?.writeText(referralUrl);
@@ -426,7 +426,7 @@ export function DashboardView() {
       <PwaInstallModal
         isOpen={showPwaModal}
         onClose={() => setShowPwaModal(false)}
-        siteName={settings?.siteTitle || 'SarmayaXProfit'}
+        siteName={settings?.siteTitle || settings?.siteName || 'Sikka Poultry Farm'}
         logoUrl={settings?.logoUrl}
       />
     </div>

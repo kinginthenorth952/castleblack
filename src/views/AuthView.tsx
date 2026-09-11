@@ -121,11 +121,11 @@ export function AuthView({ initialMode = 'login' }: { initialMode?: 'login' | 'r
         {/* Brand Emblem on top */}
         <div className="flex flex-col items-center text-center">
           <PrimeInvestLogo size="lg" customLogoUrl={settings?.logoUrl} />
-          <h1 className="mt-2 text-xl font-bold text-[#3C3024] tracking-tight">
-            {settings?.siteName || 'Prime Invest'}
+          <h1 className="mt-2 text-xl font-bold text-[#0F2D1F] tracking-tight">
+            {settings?.siteName || 'Sikka Poultry Farm'}
           </h1>
-          <span className="text-xs text-[#D09009] font-mono tracking-wider uppercase font-bold">
-            {settings?.siteSubtitle || 'Institutional Yield Platform'}
+          <span className="text-xs text-[#006A4E] font-mono tracking-wider uppercase font-bold">
+            {settings?.siteSubtitle || 'Agricultural Livestock & Savings Schemes'}
           </span>
         </div>
 
@@ -139,10 +139,10 @@ export function AuthView({ initialMode = 'login' }: { initialMode?: 'login' | 'r
                   CREATE YOUR ACCOUNT
                 </span>
                 <h2 className="text-lg font-bold text-[#3C3024] mt-0.5">
-                  Join {settings?.siteName || 'Prime Invest'}
+                  Join {settings?.siteName || 'Sikka Poultry Farm'}
                 </h2>
                 <p className="text-xs text-[#8C7A6B] mt-1">
-                  Enter your credentials to access automated high-yield portfolios.
+                  Enter your credentials to access poultry livestock schemes & daily returns.
                 </p>
               </div>
 
@@ -298,7 +298,7 @@ export function AuthView({ initialMode = 'login' }: { initialMode?: 'login' | 'r
                   WELCOME BACK
                 </span>
                 <h2 className="text-lg font-bold text-[#3C3024] mt-0.5">
-                  Sign In to {settings?.siteName || 'Prime Invest'}
+                  Sign In to {settings?.siteName || 'Sikka Poultry Farm'}
                 </h2>
                 <p className="text-xs text-[#8C7A6B] mt-1">
                   Access your portfolio, daily yields, and account balance.

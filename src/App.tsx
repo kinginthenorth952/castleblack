@@ -138,7 +138,7 @@ function AppContent() {
   const showBottomNav = currentUser && !['login', 'register', 'admin', 'landing'].includes(currentView);
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] text-[#3C3024] selection:bg-[#F5BE27] selection:text-[#3C3024] font-sans antialiased transition-colors duration-200">
+    <div className="min-h-screen bg-[#F4F8F5] text-[#0F2D1F] selection:bg-[#006A4E] selection:text-white font-sans antialiased transition-colors duration-200">
       {/* Dynamic View */}
       {renderCurrentView()}
 
@@ -156,15 +156,15 @@ function AppContent() {
               key={toast.id}
               className={`px-4 py-2.5 rounded-xl border shadow-xl backdrop-blur-md flex items-center gap-2.5 text-xs font-semibold max-w-sm pointer-events-auto animate-in fade-in slide-in-from-top-4 duration-200 ${
                 toast.type === 'success'
-                  ? 'bg-[#1A281E] border-[#2D5A37] text-[#000000] shadow-emerald-950/20'
+                  ? 'bg-white border-[#D1E7DD] text-[#006A4E] shadow-md shadow-[#006A4E]/10'
                   : toast.type === 'error'
-                    ? 'bg-[#2E1818] border-[#5C2626] text-[#000000] shadow-rose-950/20'
-                    : 'bg-[#2F2514] border-[#634C19] text-[#000000] shadow-amber-950/20'
+                    ? 'bg-white border-rose-200 text-rose-700 shadow-md shadow-rose-900/10'
+                    : 'bg-white border-amber-200 text-amber-800 shadow-md shadow-amber-900/10'
               }`}
             >
-              {toast.type === 'success' && <CheckCircle className="w-4 h-4 shrink-0 text-[#15803D]" />}
+              {toast.type === 'success' && <CheckCircle className="w-4 h-4 shrink-0 text-[#006A4E]" />}
               {toast.type === 'error' && <XCircle className="w-4 h-4 shrink-0 text-[#B91C1C]" />}
-              {toast.type === 'info' && <Info className="w-4 h-4 shrink-0 text-[#D09009]" />}
+              {toast.type === 'info' && <Info className="w-4 h-4 shrink-0 text-[#D4AF37]" />}
               <span>{toast.message}</span>
             </div>
           ))}

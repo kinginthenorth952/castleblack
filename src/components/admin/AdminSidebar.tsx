@@ -306,7 +306,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="text-sm font-black tracking-tight text-[#3C3024]">
-                  {settings?.siteName || 'Prime Invest'}
+                  {settings?.siteName || 'Sikka Poultry Farm'}
                 </span>
                 <span className="px-1.5 py-0.2 rounded text-[8px] font-black bg-gradient-to-r from-[#F5BE27] to-[#D09009] text-white uppercase">
                   ADMIN

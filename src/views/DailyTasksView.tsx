@@ -54,8 +54,8 @@ export function DailyTasksView() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#FDFBF7] pb-24 text-[#3C3024] flex flex-col items-center">
-      <Header title={settings?.siteName || 'Prime Invest'} subtitle="Daily Tasks" showBack rightAction="history" />
+    <div className="w-full min-h-screen bg-[#F4F8F5] pb-24 text-[#0F2D1F] flex flex-col items-center">
+      <Header title={settings?.siteName || 'Sikka Poultry Farm'} subtitle="Daily Tasks" showBack rightAction="history" />
 
       <main className="w-full max-w-2xl px-4 space-y-4 mt-2">
         {/* Banner */}

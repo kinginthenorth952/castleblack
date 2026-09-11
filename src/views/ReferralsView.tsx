@@ -144,7 +144,7 @@ export function ReferralsView() {
 
   const referralUrl = typeof window !== 'undefined'
     ? `${window.location.origin}?ref=${currentUser?.username || 'user'}`
-    : `https://trade-apex.xyz?ref=${currentUser?.username || 'user'}`;
+    : `https://sikkapoultryfarm.com?ref=${currentUser?.username || 'user'}`;
 
   const handleCopy = () => {
     navigator.clipboard?.writeText(referralUrl);
@@ -154,11 +154,11 @@ export function ReferralsView() {
   };
 
   const handleShare = () => {
-    const siteTitle = settings?.siteName || 'SarmayaXProfit';
+    const siteTitle = settings?.siteName || 'Sikka Poultry Farm';
     if (navigator.share) {
       navigator.share({
         title: `Join ${siteTitle}`,
-        text: `Join ${siteTitle} to earn daily returns on automated investment plans!`,
+        text: `Join ${siteTitle} to earn daily returns on poultry savings schemes!`,
         url: referralUrl,
       }).catch(() => handleCopy());
     } else {
@@ -167,8 +167,8 @@ export function ReferralsView() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#FDFBF7] pb-24 text-[#3C3024] flex flex-col items-center">
-      <Header title={settings?.siteName || 'Prime Invest'} subtitle="Member Network" showBack rightAction="profile" />
+    <div className="w-full min-h-screen bg-[#F4F8F5] pb-24 text-[#0F2D1F] flex flex-col items-center">
+      <Header title={settings?.siteName || 'Sikka Poultry Farm'} subtitle="Member Network" showBack rightAction="profile" />
 
       <main className="w-full max-w-2xl px-4 space-y-4 mt-2">
         {/* Referral Network Card */}

@@ -226,7 +226,7 @@ export function AdminView() {
               /controlcentersarmayadmin5arm7a
             </span>
             <h2 className="text-xl sm:text-2xl font-bold text-[#3C3024] mt-1">
-              {settings?.siteName || 'SarmayaXProfit'} Staff Console
+              {settings?.siteName || 'Sikka Poultry Farm'} Staff Console
             </h2>
             <p className="text-xs text-[#8C7A6B] mt-1">
               Restricted administrative portal. Enter master access key to proceed.
