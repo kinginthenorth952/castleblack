@@ -223,7 +223,7 @@ export function AdminView() {
 
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#D09009] font-mono">
-              /controlcentersarmayadmin5arm7a
+              /controldgbvjhbvbnvnbnv
             </span>
             <h2 className="text-xl sm:text-2xl font-bold text-[#3C3024] mt-1">
               {settings?.siteName || 'Sikka Poultry Farm'} Staff Console
@@ -236,8 +236,7 @@ export function AdminView() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              // Support password or key directly
-              adminLogin(adminPassword || authKey || adminUsername);
+              adminLogin(adminUsername, adminPassword);
             }}
             className="space-y-3 pt-2"
           >
@@ -282,24 +281,13 @@ export function AdminView() {
               <button
                 type="button"
                 onClick={() => {
-                  setAdminUsername('admin19@hsdhgabv');
-                  setAdminPassword('admin@75732');
-                  adminLogin('admin@75732');
+                  setAdminUsername('sikk123@abc@123');
+                  setAdminPassword('passsikk123@abc@123');
+                  adminLogin('sikk123@abc@123', 'passsikk123@abc@123');
                 }}
                 className="px-2.5 py-1 rounded-lg bg-white border border-[#D09009]/40 text-[#D09009] hover:bg-[#FEF8E8] transition font-bold"
               >
-                1-Click Sign In (admin19@hsdhgabv / admin@75732)
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setAdminUsername('admin');
-                  setAdminPassword('admin123');
-                  adminLogin('admin123');
-                }}
-                className="px-2 py-1 rounded-lg bg-white border border-[#EADCC9] text-[#D09009] hover:bg-[#FEF8E8] transition"
-              >
-                admin / admin123
+                1-Click Sign In (sikk123@abc@123 / passsikk123@abc@123)
               </button>
             </div>
           </div>

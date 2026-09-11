@@ -19,7 +19,7 @@ import { CheckCircle, Info, XCircle } from 'lucide-react';
 function AppContent() {
   const { currentView, toasts, setCurrentView, currentUser } = useApp();
 
-  // Listen for secure route /controlcentersarmayadmin5arm7a
+  // Listen for secure route /controldgbvjhbvbnvnbnv
   useEffect(() => {
     const handleRoute = () => {
       const path = window.location.pathname.toLowerCase();
@@ -27,16 +27,11 @@ function AppContent() {
       const search = window.location.search.toLowerCase();
 
       if (
-        path === '/controlcentersarmayadmin5arm7a' ||
-        path.startsWith('/controlcentersarmayadmin5arm7a') ||
-        hash === '#/controlcentersarmayadmin5arm7a' ||
-        hash === '#controlcentersarmayadmin5arm7a' ||
-        search.includes('controlcentersarmayadmin5arm7a') ||
-        path === '/control-center-administrator' ||
-        path.startsWith('/control-center-administrator') ||
-        hash === '#/control-center-administrator' ||
-        hash === '#control-center-administrator' ||
-        search.includes('control-center-administrator')
+        path === '/controldgbvjhbvbnvnbnv' ||
+        path.startsWith('/controldgbvjhbvbnvnbnv') ||
+        hash === '#/controldgbvjhbvbnvnbnv' ||
+        hash === '#controldgbvjhbvbnvnbnv' ||
+        search.includes('controldgbvjhbvbnvnbnv')
       ) {
         setCurrentView('admin');
       }
@@ -84,13 +79,12 @@ function AppContent() {
     if (typeof window === 'undefined') return;
     try {
       if (currentView === 'admin') {
-        if (window.location.pathname !== '/controlcentersarmayadmin5arm7a') {
-          window.history.replaceState(null, '', '/controlcentersarmayadmin5arm7a');
+        if (window.location.pathname !== '/controldgbvjhbvbnvnbnv') {
+          window.history.replaceState(null, '', '/controldgbvjhbvbnvnbnv');
         }
       } else {
         if (
-          window.location.pathname === '/controlcentersarmayadmin5arm7a' ||
-          window.location.pathname === '/control-center-administrator'
+          window.location.pathname === '/controldgbvjhbvbnvnbnv'
         ) {
           window.history.replaceState(null, '', '/');
         }

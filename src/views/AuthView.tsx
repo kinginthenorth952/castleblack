@@ -239,25 +239,6 @@ export function AuthView() {
           {/* REGISTER FORM */}
           {mode === 'register' && (
             <form onSubmit={handleRegister} className="mt-6 text-left space-y-3.5">
-              {/* Full Name Field */}
-              <div>
-                <label className="block text-xs font-semibold text-[#5C4015] mb-1.5">
-                  Full Name
-                </label>
-                <div className="relative flex items-center border border-[#E5BE7E] hover:border-[#D99A26] focus-within:border-[#D99A26] rounded-2xl bg-white p-1.5 transition-all shadow-2xs">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5BE27] to-[#D09009] flex items-center justify-center text-white shrink-0 shadow-xs">
-                    <User className="w-4 h-4" />
-                  </div>
-                  <input
-                    type="text"
-                    value={regFullName}
-                    onChange={(e) => setRegFullName(e.target.value)}
-                    placeholder="Enter your full name"
-                    className="w-full bg-transparent pl-3 pr-2 text-sm text-[#4A3515] placeholder-[#B5A593] outline-none"
-                  />
-                </div>
-              </div>
-
               {/* Username Field */}
               <div>
                 <label className="block text-xs font-semibold text-[#5C4015] mb-1.5">
@@ -298,25 +279,6 @@ export function AuthView() {
                 </div>
               </div>
 
-              {/* Phone Number */}
-              <div>
-                <label className="block text-xs font-semibold text-[#5C4015] mb-1.5">
-                  Phone Number
-                </label>
-                <div className="relative flex items-center border border-[#E5BE7E] hover:border-[#D99A26] focus-within:border-[#D99A26] rounded-2xl bg-white p-1.5 transition-all shadow-2xs">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5BE27] to-[#D09009] flex items-center justify-center text-white shrink-0 shadow-xs">
-                    <Phone className="w-4 h-4" />
-                  </div>
-                  <input
-                    type="tel"
-                    value={regPhone}
-                    onChange={(e) => setRegPhone(e.target.value)}
-                    placeholder="03001234567"
-                    className="w-full bg-transparent pl-3 pr-2 text-sm text-[#4A3515] placeholder-[#B5A593] outline-none"
-                  />
-                </div>
-              </div>
-
               {/* Password Field */}
               <div>
                 <label className="block text-xs font-semibold text-[#5C4015] mb-1.5">
@@ -345,25 +307,6 @@ export function AuthView() {
                       <Eye className="w-4 h-4" />
                     )}
                   </button>
-                </div>
-              </div>
-
-              {/* Referral Code (Optional) */}
-              <div>
-                <label className="block text-xs font-semibold text-[#5C4015] mb-1.5">
-                  Referral Code (Optional)
-                </label>
-                <div className="relative flex items-center border border-[#E5BE7E] hover:border-[#D99A26] focus-within:border-[#D99A26] rounded-2xl bg-white p-1.5 transition-all shadow-2xs">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5BE27] to-[#D09009] flex items-center justify-center text-white shrink-0 shadow-xs">
-                    <Gift className="w-4 h-4" />
-                  </div>
-                  <input
-                    type="text"
-                    value={regReferral}
-                    onChange={(e) => setRegReferral(e.target.value)}
-                    placeholder="Referrer username"
-                    className="w-full bg-transparent pl-3 pr-2 text-sm text-[#4A3515] placeholder-[#B5A593] outline-none"
-                  />
                 </div>
               </div>
 

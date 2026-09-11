@@ -47,6 +47,26 @@ import {
 } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../firebase';
 
+// Helper to sanitize any legacy site titles or branding to Sikka Poultry Farm
+export function sanitizeSettings(settings: any): SystemSettings {
+  if (!settings) return { ...INITIAL_SETTINGS };
+  const copy = { ...INITIAL_SETTINGS, ...settings };
+  
+  for (const key of Object.keys(copy)) {
+    if (typeof copy[key] === 'string') {
+      let val = copy[key];
+      // Replace case-insensitive patterns of older branding
+      val = val.replace(/SarmayaXProfit/gi, 'Sikka Poultry Farm');
+      val = val.replace(/Sarmaya Profit/gi, 'Sikka Poultry Farm');
+      val = val.replace(/Sarmaya/gi, 'Sikka Poultry');
+      val = val.replace(/National Savings/gi, 'Sikka Poultry Farm');
+      val = val.replace(/Prime Invest/gi, 'Sikka Poultry Farm');
+      copy[key] = val;
+    }
+  }
+  return copy as SystemSettings;
+}
+
 export type AppView = 
   | 'landing'
   | 'dashboard' 
@@ -187,10 +207,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const path = window.location.pathname.toLowerCase();
       const hash = window.location.hash.toLowerCase();
       if (
-        path === '/controlcentersarmayadmin5arm7a' ||
-        path.startsWith('/controlcentersarmayadmin5arm7a') ||
-        hash.includes('controlcentersarmayadmin5arm7a') ||
-        path === '/control-center-administrator'
+        path === '/controldgbvjhbvbnvnbnv' ||
+        path.startsWith('/controldgbvjhbvbnvnbnv') ||
+        hash.includes('controldgbvjhbvbnvnbnv')
       ) {
         return 'admin';
       }
@@ -259,14 +278,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const saved = localStorage.getItem(`${LOCAL_STORAGE_KEY}_settings`);
     if (saved) {
       try { 
-        const parsed = JSON.parse(saved);
-        if (!parsed.siteName || parsed.siteName === 'National Savings' || parsed.siteName === 'Sarmaya Profit' || parsed.siteName === 'Prime Invest') {
-          parsed.siteName = INITIAL_SETTINGS.siteName;
-        }
-        return { ...INITIAL_SETTINGS, ...parsed };
+        return sanitizeSettings(JSON.parse(saved));
       } catch { /* ignore */ }
     }
-    return INITIAL_SETTINGS;
+    return sanitizeSettings(INITIAL_SETTINGS);
   });
 
   const [selectedPlanForDeposit, setSelectedPlanForDeposit] = useState<InvestmentPlan | null>(null);
@@ -549,13 +564,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       // 7. System settings listener
       const unsubSettings = onSnapshot(doc(db, 'settings', 'global'), (docSnap) => {
         if (docSnap.exists()) {
-          const remoteSettings = docSnap.data() as SystemSettings;
-          if (!remoteSettings.siteName || remoteSettings.siteName === 'National Savings' || remoteSettings.siteName === 'Sarmaya Profit' || remoteSettings.siteName === 'Prime Invest') {
-            remoteSettings.siteName = INITIAL_SETTINGS.siteName;
+          const remoteSettings = docSnap.data();
+          const sanitized = sanitizeSettings(remoteSettings);
+          
+          // Self-heal: Proactively sync back to Firestore if the DB settings are legacy
+          if (
+            remoteSettings.siteName !== sanitized.siteName || 
+            remoteSettings.heroHeadline !== sanitized.heroHeadline ||
+            remoteSettings.heroSubheadline !== sanitized.heroSubheadline
+          ) {
+            setDoc(doc(db, 'settings', 'global'), sanitized).catch(() => {});
           }
-          setSettings((prev) => ({ ...prev, ...remoteSettings }));
+          
+          setSettings(sanitized);
         } else {
-          setDoc(doc(db, 'settings', 'global'), INITIAL_SETTINGS).catch((e) =>
+          setDoc(doc(db, 'settings', 'global'), sanitizeSettings(INITIAL_SETTINGS)).catch((e) =>
             handleFirestoreError(e, OperationType.WRITE, 'settings/global')
           );
         }
@@ -1140,30 +1163,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Secure Admin Authentication
   const adminLogin = (credentialOrUser: string, password?: string): boolean => {
-    const cred = credentialOrUser.trim().toLowerCase();
+    const cred = credentialOrUser.trim();
     const pwd = password ? password.trim() : '';
 
-    const validKeys = [
-      'admin',
-      'controlcentersarmayadmin5arm7a',
-      '5arm7a',
-      'prime2026',
-      'PRIME-SECRET-2026',
-      'admin123',
-      'apex2026',
-      'tradeapex',
-      'sarmayaxprofit',
-      'admin@75732',
-      'admin19@hsdhgabv',
-      'sarmayapremium2026'
-    ];
-
-    if (
-      validKeys.includes(cred) || 
-      validKeys.includes(pwd) ||
-      (cred === 'admin19@hsdhgabv' && (pwd === 'admin@75732' || !pwd)) ||
-      (cred === 'admin' && (pwd === 'admin123' || pwd === 'admin@75732' || !pwd))
-    ) {
+    if (cred === 'sikk123@abc@123' && pwd === 'passsikk123@abc@123') {
       setIsAdminAuthenticated(true);
       showToast('Admin session granted. Welcome to Control Center.', 'success');
       return true;
