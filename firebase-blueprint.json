@@ -1,0 +1,192 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with balance, team statistics and status",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "username": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "password": { "type": "string" },
+        "mobile": { "type": "string" },
+        "country": { "type": "string" },
+        "referralBy": { "type": "string" },
+        "balance": { "type": "number" },
+        "pendingDeposit": { "type": "number" },
+        "totalDeposit": { "type": "number" },
+        "pendingWithdraw": { "type": "number" },
+        "totalWithdraw": { "type": "number" },
+        "teamCount": { "type": "number" },
+        "teamInvestment": { "type": "number" },
+        "teamCommission": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "blocked"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "username", "email", "balance", "status", "createdAt"]
+    },
+    "DepositRecord": {
+      "title": "DepositRecord",
+      "description": "Manual deposit transaction record with payment gateway and slip",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "gateway": { "type": "string" },
+        "amount": { "type": "number" },
+        "transactionId": { "type": "string" },
+        "screenshotUrl": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "planId": { "type": "string" },
+        "rejectionReason": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "reviewedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "username", "gateway", "amount", "transactionId", "status", "createdAt"]
+    },
+    "WithdrawRecord": {
+      "title": "WithdrawRecord",
+      "description": "Withdrawal request record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "gateway": { "type": "string" },
+        "amount": { "type": "number" },
+        "accountNumber": { "type": "string" },
+        "accountName": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "rejectionReason": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "reviewedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "username", "gateway", "amount", "accountNumber", "accountName", "status", "createdAt"]
+    },
+    "UserActivePlan": {
+      "title": "UserActivePlan",
+      "description": "Active investment plan subscription for an investor",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "planId": { "type": "string" },
+        "planName": { "type": "string" },
+        "price": { "type": "number" },
+        "dailyEarning": { "type": "number" },
+        "totalEarningTarget": { "type": "number" },
+        "earnedSoFar": { "type": "number" },
+        "durationDays": { "type": "number" },
+        "daysPassed": { "type": "number" },
+        "startDate": { "type": "string" },
+        "lastClaimDate": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "completed"] }
+      },
+      "required": ["id", "userId", "planId", "planName", "price", "dailyEarning", "totalEarningTarget", "durationDays", "status", "startDate"]
+    },
+    "TransactionRecord": {
+      "title": "TransactionRecord",
+      "description": "Financial ledger activity record for audit and history",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "type": { "type": "string", "enum": ["deposit", "withdraw", "plan_buy", "task_earning", "referral_bonus", "admin_adjustment"] },
+        "amount": { "type": "number" },
+        "description": { "type": "string" },
+        "status": { "type": "string", "enum": ["completed", "pending", "rejected"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "type", "amount", "description", "status", "createdAt"]
+    },
+    "InvestmentPlan": {
+      "title": "InvestmentPlan",
+      "description": "Investment tier packages available on the platform",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "dailyEarning": { "type": "number" },
+        "totalEarning": { "type": "number" },
+        "durationDays": { "type": "number" },
+        "gradient": { "type": "string" },
+        "iconType": { "type": "string" },
+        "colorTag": { "type": "string" },
+        "isActive": { "type": "boolean" }
+      },
+      "required": ["id", "name", "price", "dailyEarning", "totalEarning", "durationDays", "isActive"]
+    },
+    "SystemSettings": {
+      "title": "SystemSettings",
+      "description": "Platform settings including deposit gateways, support links, fees and limits",
+      "type": "object",
+      "properties": {
+        "siteName": { "type": "string" },
+        "siteSubtitle": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "currencySymbol": { "type": "string" },
+        "heroHeadline": { "type": "string" },
+        "heroSubheadline": { "type": "string" },
+        "noticeBanner": { "type": "string" },
+        "showNoticeBanner": { "type": "boolean" },
+        "enableDeposits": { "type": "boolean" },
+        "enableWithdrawals": { "type": "boolean" },
+        "enableTasks": { "type": "boolean" },
+        "easypaisaAccount": { "type": "string" },
+        "easypaisaTitle": { "type": "string" },
+        "jazzcashAccount": { "type": "string" },
+        "jazzcashTitle": { "type": "string" },
+        "bankName": { "type": "string" },
+        "bankAccount": { "type": "string" },
+        "bankTitle": { "type": "string" },
+        "qrCodeUrl": { "type": "string" },
+        "adminWhatsApp": { "type": "string" },
+        "whatsappGroup": { "type": "string" },
+        "whatsappChannel": { "type": "string" },
+        "telegramSupport": { "type": "string" },
+        "supportHours": { "type": "string" },
+        "appDownloadUrl": { "type": "string" },
+        "minWithdraw": { "type": "number" },
+        "maxWithdraw": { "type": "number" },
+        "minDeposit": { "type": "number" },
+        "maxDeposit": { "type": "number" }
+      },
+      "required": ["siteName", "currencySymbol"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User account documents containing profile and balances"
+    },
+    "/deposits/{depositId}": {
+      "schema": "DepositRecord",
+      "description": "Manual deposit slips submitted by investors"
+    },
+    "/withdrawals/{withdrawId}": {
+      "schema": "WithdrawRecord",
+      "description": "Withdrawal requests submitted by investors"
+    },
+    "/user_plans/{userPlanId}": {
+      "schema": "UserActivePlan",
+      "description": "Active and completed investment plans purchased by users"
+    },
+    "/transactions/{transactionId}": {
+      "schema": "TransactionRecord",
+      "description": "Auditable transaction history and financial ledger"
+    },
+    "/plans/{planId}": {
+      "schema": "InvestmentPlan",
+      "description": "Available investment tiers configured by administration"
+    },
+    "/settings/{settingsId}": {
+      "schema": "SystemSettings",
+      "description": "System-wide parameters, gateways and platform settings"
+    }
+  }
+}

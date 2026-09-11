@@ -1,0 +1,194 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Entity validation blueprints
+    function isValidUser(data) {
+      return data.id is string && isValidId(data.id) &&
+             data.username is string && data.username.size() >= 2 && data.username.size() <= 64 &&
+             data.email is string && data.email.size() <= 128 &&
+             data.balance is number && data.balance >= 0 &&
+             data.status in ['active', 'blocked'] &&
+             data.createdAt is string;
+    }
+
+    function isValidDeposit(data) {
+      return data.id is string && isValidId(data.id) &&
+             data.userId is string && isValidId(data.userId) &&
+             data.username is string && data.username.size() <= 64 &&
+             data.gateway is string && data.gateway.size() <= 64 &&
+             data.amount is number && data.amount > 0 &&
+             data.transactionId is string && data.transactionId.size() > 0 && data.transactionId.size() <= 128 &&
+             data.status in ['pending', 'approved', 'rejected'] &&
+             data.createdAt is string;
+    }
+
+    function isValidWithdraw(data) {
+      return data.id is string && isValidId(data.id) &&
+             data.userId is string && isValidId(data.userId) &&
+             data.username is string && data.username.size() <= 64 &&
+             data.gateway is string && data.gateway.size() <= 64 &&
+             data.amount is number && data.amount > 0 &&
+             data.accountNumber is string && data.accountNumber.size() > 0 && data.accountNumber.size() <= 64 &&
+             data.accountName is string && data.accountName.size() > 0 && data.accountName.size() <= 64 &&
+             data.status in ['pending', 'approved', 'rejected'] &&
+             data.createdAt is string;
+    }
+
+    function isValidUserPlan(data) {
+      return data.id is string && isValidId(data.id) &&
+             data.userId is string && isValidId(data.userId) &&
+             data.planId is string && isValidId(data.planId) &&
+             data.planName is string && data.planName.size() <= 64 &&
+             data.price is number && data.price >= 0 &&
+             data.dailyEarning is number && data.dailyEarning > 0 &&
+             data.totalEarningTarget is number && data.totalEarningTarget >= data.dailyEarning &&
+             data.durationDays is number && data.durationDays > 0 &&
+             data.status in ['active', 'completed'] &&
+             data.startDate is string;
+    }
+
+    function isValidTransaction(data) {
+      return data.id is string && isValidId(data.id) &&
+             data.userId is string && isValidId(data.userId) &&
+             data.type in ['deposit', 'withdraw', 'plan_buy', 'task_earning', 'referral_bonus', 'admin_adjustment'] &&
+             data.amount is number &&
+             data.description is string && data.description.size() <= 256 &&
+             data.status in ['completed', 'pending', 'rejected'] &&
+             data.createdAt is string;
+    }
+
+    function isValidPlan(data) {
+      return data.id is string && isValidId(data.id) &&
+             data.name is string && data.name.size() <= 64 &&
+             data.price is number && data.price >= 0 &&
+             data.dailyEarning is number && data.dailyEarning > 0 &&
+             data.totalEarning is number && data.totalEarning > 0 &&
+             data.durationDays is number && data.durationDays > 0 &&
+             data.isActive is bool;
+    }
+
+    function isValidSettings(data) {
+      return data.siteName is string && data.siteName.size() <= 128 &&
+             data.currencySymbol is string && data.currencySymbol.size() <= 16;
+    }
+
+    // 1. Users Collection
+    match /users/{userId} {
+      allow get: if isValidId(userId);
+      allow list: if true;
+      allow create: if isValidId(userId) &&
+                       isValidUser(incoming()) &&
+                       incoming().id == userId &&
+                       incoming().balance == 0 &&
+                       incoming().status == 'active';
+      allow update: if isValidId(userId) &&
+                       isValidUser(incoming()) &&
+                       incoming().id == existing().id &&
+                       incoming().createdAt == existing().createdAt;
+      allow delete: if isValidId(userId);
+    }
+
+    // 2. Deposits Collection
+    match /deposits/{depositId} {
+      allow get: if isValidId(depositId);
+      allow list: if true;
+      allow create: if isValidId(depositId) &&
+                       isValidDeposit(incoming()) &&
+                       incoming().id == depositId &&
+                       incoming().status == 'pending' &&
+                       incoming().amount > 0;
+      allow update: if isValidId(depositId) &&
+                       isValidDeposit(incoming()) &&
+                       incoming().id == existing().id &&
+                       incoming().createdAt == existing().createdAt &&
+                       (existing().status == 'pending' || incoming().status == existing().status);
+      allow delete: if isValidId(depositId);
+    }
+
+    // 3. Withdrawals Collection
+    match /withdrawals/{withdrawId} {
+      allow get: if isValidId(withdrawId);
+      allow list: if true;
+      allow create: if isValidId(withdrawId) &&
+                       isValidWithdraw(incoming()) &&
+                       incoming().id == withdrawId &&
+                       incoming().status == 'pending' &&
+                       incoming().amount >= 100;
+      allow update: if isValidId(withdrawId) &&
+                       isValidWithdraw(incoming()) &&
+                       incoming().id == existing().id &&
+                       incoming().createdAt == existing().createdAt &&
+                       (existing().status == 'pending' || incoming().status == existing().status);
+      allow delete: if isValidId(withdrawId);
+    }
+
+    // 4. User Plans Collection
+    match /user_plans/{userPlanId} {
+      allow get: if isValidId(userPlanId);
+      allow list: if true;
+      allow create: if isValidId(userPlanId) &&
+                       isValidUserPlan(incoming()) &&
+                       incoming().id == userPlanId &&
+                       incoming().status == 'active' &&
+                       incoming().earnedSoFar == 0;
+      allow update: if isValidId(userPlanId) &&
+                       isValidUserPlan(incoming()) &&
+                       incoming().id == existing().id &&
+                       incoming().startDate == existing().startDate &&
+                       incoming().price == existing().price;
+      allow delete: if isValidId(userPlanId);
+    }
+
+    // 5. Transactions Collection
+    match /transactions/{transactionId} {
+      allow get: if isValidId(transactionId);
+      allow list: if true;
+      allow create: if isValidId(transactionId) &&
+                       isValidTransaction(incoming()) &&
+                       incoming().id == transactionId;
+      allow update: if isValidId(transactionId) &&
+                       isValidTransaction(incoming()) &&
+                       incoming().id == existing().id &&
+                       incoming().createdAt == existing().createdAt;
+      allow delete: if isValidId(transactionId);
+    }
+
+    // 6. Plans Collection
+    match /plans/{planId} {
+      allow get: if isValidId(planId);
+      allow list: if true;
+      allow create, update: if isValidId(planId) &&
+                               isValidPlan(incoming()) &&
+                               incoming().id == planId;
+      allow delete: if isValidId(planId);
+    }
+
+    // 7. Settings Collection
+    match /settings/{settingsId} {
+      allow get: if isValidId(settingsId);
+      allow list: if true;
+      allow create, update: if isValidId(settingsId) &&
+                               isValidSettings(incoming());
+      allow delete: if false;
+    }
+
+    // Catch-all default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
