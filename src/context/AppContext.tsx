@@ -258,7 +258,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [settings, setSettings] = useState<SystemSettings>(() => {
     const saved = localStorage.getItem(`${LOCAL_STORAGE_KEY}_settings`);
     if (saved) {
-      try { return JSON.parse(saved); } catch { /* ignore */ }
+      try { 
+        const parsed = JSON.parse(saved);
+        if (!parsed.siteName || parsed.siteName === 'National Savings' || parsed.siteName === 'Sarmaya Profit' || parsed.siteName === 'Prime Invest') {
+          parsed.siteName = INITIAL_SETTINGS.siteName;
+        }
+        return { ...INITIAL_SETTINGS, ...parsed };
+      } catch { /* ignore */ }
     }
     return INITIAL_SETTINGS;
   });
@@ -543,7 +549,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       // 7. System settings listener
       const unsubSettings = onSnapshot(doc(db, 'settings', 'global'), (docSnap) => {
         if (docSnap.exists()) {
-          setSettings((prev) => ({ ...prev, ...(docSnap.data() as SystemSettings) }));
+          const remoteSettings = docSnap.data() as SystemSettings;
+          if (!remoteSettings.siteName || remoteSettings.siteName === 'National Savings' || remoteSettings.siteName === 'Sarmaya Profit' || remoteSettings.siteName === 'Prime Invest') {
+            remoteSettings.siteName = INITIAL_SETTINGS.siteName;
+          }
+          setSettings((prev) => ({ ...prev, ...remoteSettings }));
         } else {
           setDoc(doc(db, 'settings', 'global'), INITIAL_SETTINGS).catch((e) =>
             handleFirestoreError(e, OperationType.WRITE, 'settings/global')

@@ -34,7 +34,7 @@ export function Header({
                 {settings?.siteName || 'Sikka Poultry Farm'}
               </span>
               <span className="block text-[10px] text-[#5E7E6F] uppercase tracking-widest font-mono font-bold -mt-0.5">
-                {settings?.siteSubtitle || 'Agricultural Livestock & Savings Schemes'}
+                {settings?.siteSubtitle || 'Secure Your Future, Grow Your Wealth'}
               </span>
             </div>
           </div>

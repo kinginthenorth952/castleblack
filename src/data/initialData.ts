@@ -149,12 +149,12 @@ export const INITIAL_PLANS: InvestmentPlan[] = [
 
 export const INITIAL_SETTINGS: SystemSettings = {
   siteName: 'Sikka Poultry Farm',
-  siteSubtitle: 'Agricultural Livestock & Savings Schemes',
+  siteSubtitle: 'Secure Your Future, Grow Your Wealth',
   logoUrl: '',
   defaultTheme: 'apple-dark',
   currencySymbol: 'Rs',
-  heroHeadline: 'Sikka Poultry Farm',
-  heroSubheadline: 'National savings-styled poultry livestock investment certificates, daily profit distribution, automated egg & broiler production earnings.',
+  heroHeadline: 'Build Your Financial Future With Confidence',
+  heroSubheadline: 'Sikka Poultry Farm gives you a simple, modern and professional way to explore investment opportunities, access your account and stay connected with support.',
   noticeBanner: 'Deposit approval time is 10 to 30 minutes. Sikka Poultry Farm guarantees timely daily profit disbursements.',
   showNoticeBanner: true,
   enableDeposits: true,

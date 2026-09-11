@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { 
-  getFirestore, 
+  initializeFirestore, 
   doc, 
   setDoc, 
   getDoc, 
@@ -9,29 +9,18 @@ import {
   collection, 
   updateDoc, 
   deleteDoc, 
-  onSnapshot,
-  getDocFromServer 
+  onSnapshot 
 } from 'firebase/firestore';
 import firebaseConfig from '../firebase-applet-config.json';
 
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firestore with database ID from configuration
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+// Initialize Firestore with robust long polling to ensure reliable connection in web iframes and proxies
+export const db = initializeFirestore(app, {
+  experimentalForceLongPolling: true,
+}, firebaseConfig.firestoreDatabaseId);
 
 export const auth = getAuth(app);
-
-// Validate connection to Firestore on boot
-async function testConnection() {
-  try {
-    await getDocFromServer(doc(db, 'test', 'connection'));
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.error('Please check your Firebase configuration.');
-    }
-  }
-}
-testConnection();
 
 export enum OperationType {
   CREATE = 'create',
@@ -77,6 +66,13 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
     operationType,
     path,
   };
+
+  // Gracefully handle temporary backend connection or offline notices
+  if (errorMessage.toLowerCase().includes('unavailable') || errorMessage.toLowerCase().includes('offline') || errorMessage.toLowerCase().includes('could not reach')) {
+    console.warn(`Firestore operating with local cache for ${path || 'operation'} (${operationType}): ${errorMessage}`);
+    return errInfo;
+  }
+
   console.error('Firestore Error: ', JSON.stringify(errInfo));
   if (errorMessage.toLowerCase().includes('permission') || errorMessage.toLowerCase().includes('insufficient')) {
     throw new Error(JSON.stringify(errInfo));

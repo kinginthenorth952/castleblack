@@ -1,82 +1,88 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  ArrowLeft,
+  ArrowLeft, 
+  LogIn, 
+  UserPlus, 
+  User, 
+  Lock, 
   Eye, 
   EyeOff, 
-  Lock, 
+  Shield, 
   Mail, 
-  ShieldCheck, 
-  User, 
+  Phone, 
   UserCheck, 
-  UserPlus,
-  Sparkles
+  Gift 
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { PrimeInvestLogo } from '../components/PrimeInvestLogo';
-import { ThemeToggle } from '../components/ThemeToggle';
 
-export function AuthView({ initialMode = 'login' }: { initialMode?: 'login' | 'register' }) {
-  const { userLogin, userRegister, setCurrentView, showToast, settings } = useApp();
-  const [mode, setMode] = useState<'login' | 'register'>(initialMode);
-  
-  // Register Fields: strictly just mail address, username, and password
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+export function AuthView() {
+  const { currentView, setCurrentView, userLogin, userRegister, showToast, settings } = useApp();
+  const [mode, setMode] = useState<'login' | 'register'>('login');
 
-  // Referral sponsor captured from invite link (?ref=... / ?invite=...) or local storage
-  const [referralCode, setReferralCode] = useState<string>(() => {
-    if (typeof window === 'undefined') return '';
-    try {
-      const searchParams = new URLSearchParams(window.location.search);
-      const queryRef = searchParams.get('ref') || searchParams.get('invite') || searchParams.get('r');
-      if (queryRef) return queryRef.trim();
+  // Registration states
+  const [regFullName, setRegFullName] = useState('');
+  const [regUsername, setRegUsername] = useState('');
+  const [regEmail, setRegEmail] = useState('');
+  const [regPhone, setRegPhone] = useState('');
+  const [regPassword, setRegPassword] = useState('');
+  const [regReferral, setRegReferral] = useState('');
+  const [showRegPassword, setShowRegPassword] = useState(false);
 
-      if (window.location.hash.includes('?')) {
-        const hashQuery = window.location.hash.substring(window.location.hash.indexOf('?') + 1);
-        const hashParams = new URLSearchParams(hashQuery);
-        const hashRef = hashParams.get('ref') || hashParams.get('invite') || hashParams.get('r');
-        if (hashRef) return hashRef.trim();
-      }
+  // Login states
+  const [loginUsername, setLoginUsername] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
 
-      return localStorage.getItem('trade_apex_ref') || localStorage.getItem('prime_referral_code') || '';
-    } catch {
-      return '';
+  const siteName = settings?.siteName || 'Sikka Poultry Farm';
+
+  useEffect(() => {
+    if (currentView === 'register') {
+      setMode('register');
+    } else {
+      setMode('login');
     }
-  });
+  }, [currentView]);
 
-  // Login Fields: NEVER automatically filled - starts completely empty
-  const [loginIdentifier, setLoginIdentifier] = useState('');
-  const [loginPass, setLoginPass] = useState('');
+  // Check URL parameter or localStorage for referral code
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const refParam = urlParams.get('ref') || urlParams.get('invite');
+      if (refParam) {
+        setRegReferral(refParam);
+      } else {
+        const stored = localStorage.getItem('prime_referral_code') || localStorage.getItem('trade_apex_ref');
+        if (stored) setRegReferral(stored);
+      }
+    }
+  }, []);
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || !username.trim() || !password.trim()) {
-      showToast('Please provide your email address, username, and password.', 'error');
+    if (!regUsername.trim()) {
+      showToast('Please enter a username.', 'error');
+      return;
+    }
+    if (!regEmail.trim()) {
+      showToast('Please enter an email address.', 'error');
+      return;
+    }
+    if (regPassword.length < 6) {
+      showToast('Password must be at least 6 characters long.', 'error');
       return;
     }
 
-    if (username.trim().length < 3) {
-      showToast('Username must be at least 3 characters.', 'error');
-      return;
-    }
-
-    if (password.length < 6) {
-      showToast('Password must be at least 6 characters.', 'error');
-      return;
-    }
-
-    const cleanRef = referralCode.trim().replace(/^@/, '');
+    const cleanUsername = regUsername.trim().toLowerCase().replace(/\s+/g, '');
+    const cleanEmail = regEmail.trim().toLowerCase();
+    const cleanRef = regReferral.trim();
 
     const success = userRegister({
-      email: email.trim().toLowerCase(),
-      username: username.trim().toLowerCase(),
-      password: password,
-      firstName: username.trim(),
-      lastName: '',
-      mobile: '',
-      country: 'Pakistan',
+      username: cleanUsername,
+      fullName: regFullName.trim() || cleanUsername,
+      email: cleanEmail,
+      phone: regPhone.trim(),
+      password: regPassword,
       referralBy: cleanRef || 'Direct User',
     });
 
@@ -91,309 +97,313 @@ export function AuthView({ initialMode = 'login' }: { initialMode?: 'login' | 'r
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!loginIdentifier.trim()) {
-      showToast('Please enter your email address or username.', 'error');
+    if (!loginUsername.trim()) {
+      showToast('Please enter your username.', 'error');
+      return;
+    }
+    if (!loginPassword) {
+      showToast('Please enter your password.', 'error');
       return;
     }
 
-    const success = userLogin(loginIdentifier.trim(), loginPass);
+    const success = userLogin(loginUsername.trim(), loginPassword);
     if (success) {
       setCurrentView('dashboard');
     }
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#FDFBF7] py-8 px-4 flex flex-col items-center justify-center text-[#3C3024]">
-      <div className="w-full max-w-md space-y-4">
-        {/* Back to Home navigation */}
-        <div className="flex items-center justify-between">
-          <button
-            id="back-to-landing-btn"
-            type="button"
-            onClick={() => setCurrentView('landing')}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#EADCC9] text-xs text-[#8C7A6B] hover:text-[#D09009] hover:border-[#D09009] transition-colors shadow-xs"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Home</span>
-          </button>
+    <div className="min-h-screen bg-[#FAF6ED] text-[#4A3515] flex flex-col justify-between py-4 sm:py-8 px-4 sm:px-6 font-sans antialiased selection:bg-[#E59B12] selection:text-white">
+      
+      {/* Top Header Bar matching Screenshot (80) */}
+      <header className="w-full max-w-4xl mx-auto flex items-center justify-between py-2 sm:py-3 px-1 sm:px-2">
+        <div className="flex items-center gap-3">
+          <PrimeInvestLogo size="md" customLogoUrl={settings?.logoUrl} />
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#5C4015] leading-tight">
+              {siteName}
+            </h1>
+            <p className="text-xs sm:text-sm text-[#8C7A6B] font-medium leading-none mt-0.5">
+              {mode === 'login' ? 'Secure Login' : 'Secure Registration'}
+            </p>
+          </div>
         </div>
 
-        {/* Brand Emblem on top */}
-        <div className="flex flex-col items-center text-center">
-          <PrimeInvestLogo size="lg" customLogoUrl={settings?.logoUrl} />
-          <h1 className="mt-2 text-xl font-bold text-[#0F2D1F] tracking-tight">
-            {settings?.siteName || 'Sikka Poultry Farm'}
-          </h1>
-          <span className="text-xs text-[#006A4E] font-mono tracking-wider uppercase font-bold">
-            {settings?.siteSubtitle || 'Agricultural Livestock & Savings Schemes'}
-          </span>
-        </div>
+        {/* Back to Home Button matching Screenshot (80) */}
+        <button
+          type="button"
+          onClick={() => setCurrentView('landing')}
+          className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-[#EADBBD] bg-[#FAF5EA] hover:bg-white text-[#8C6320] text-xs sm:text-sm font-semibold flex items-center gap-1.5 shadow-xs transition-all cursor-pointer active:scale-95"
+        >
+          <ArrowLeft className="w-4 h-4 text-[#8C6320]" />
+          <span>Home</span>
+        </button>
+      </header>
 
-        {/* Card Container */}
-        <div className="rounded-2xl bg-white border border-[#EADCC9] p-6 shadow-sm">
-          {mode === 'register' ? (
-            /* Sign Up Mode: strictly Mail Address, Username, and Password */
-            <form onSubmit={handleRegister} className="space-y-4">
-              <div className="text-center mb-4">
-                <span className="text-[10px] font-bold text-[#D09009] tracking-wider uppercase">
-                  CREATE YOUR ACCOUNT
-                </span>
-                <h2 className="text-lg font-bold text-[#3C3024] mt-0.5">
-                  Join {settings?.siteName || 'Sikka Poultry Farm'}
-                </h2>
-                <p className="text-xs text-[#8C7A6B] mt-1">
-                  Enter your credentials to access poultry livestock schemes & daily returns.
-                </p>
-              </div>
+      {/* Center Authentication Card */}
+      <main className="w-full max-w-lg mx-auto my-auto py-4">
+        <div className="w-full bg-white rounded-3xl p-6 sm:p-10 border border-[#F0E4CE] shadow-sm text-center relative overflow-hidden">
+          
+          {/* Circular Center Logo Badge */}
+          <div className="flex justify-center mb-3">
+            <PrimeInvestLogo size="lg" customLogoUrl={settings?.logoUrl} />
+          </div>
 
-              {/* Email Address */}
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-[#8C7A6B] uppercase tracking-wider block">
-                  EMAIL ADDRESS
+          {/* Heading and Subtitle matching Screenshot (80) */}
+          <h2 className="text-2xl sm:text-[28px] font-extrabold text-[#5C4015] tracking-tight leading-tight">
+            {mode === 'login' ? 'Welcome Back' : 'Create Account'}
+          </h2>
+          <p className="text-xs sm:text-sm text-[#8C7A6B] mt-1 leading-relaxed">
+            {mode === 'login' 
+              ? 'Enter your account details to continue.' 
+              : 'Enter your details to register your account.'}
+          </p>
+
+          {/* LOGIN FORM */}
+          {mode === 'login' && (
+            <form onSubmit={handleLogin} className="mt-6 text-left space-y-4">
+              {/* Username Field */}
+              <div>
+                <label className="block text-xs font-semibold text-[#5C4015] mb-1.5">
+                  Username
                 </label>
-                <div className="relative">
-                  <Mail className="absolute left-3.5 top-3 w-4 h-4 text-[#8C7A6B]" />
+                <div className="relative flex items-center border border-[#E5BE7E] hover:border-[#D99A26] focus-within:border-[#D99A26] rounded-2xl bg-white p-1.5 transition-all shadow-2xs">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5BE27] to-[#D09009] flex items-center justify-center text-white shrink-0 shadow-xs">
+                    <User className="w-4 h-4" />
+                  </div>
                   <input
-                    id="signup-email-input"
-                    type="email"
-                    placeholder="name@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="email"
-                    className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#FCF8F2] border border-[#EADCC9] text-[#3C3024] text-xs focus:outline-none focus:border-[#D09009] placeholder:text-[#8C7A6B]"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Username */}
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-[#8C7A6B] uppercase tracking-wider block">
-                  USERNAME
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3.5 top-3 w-4 h-4 text-[#8C7A6B]" />
-                  <input
-                    id="signup-username-input"
                     type="text"
-                    placeholder="Choose a username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    autoComplete="username"
-                    className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#FCF8F2] border border-[#EADCC9] text-[#3C3024] text-xs font-mono focus:outline-none focus:border-[#D09009] placeholder:text-[#8C7A6B]"
+                    value={loginUsername}
+                    onChange={(e) => setLoginUsername(e.target.value)}
+                    placeholder="Enter username"
                     required
+                    className="w-full bg-transparent pl-3 pr-2 text-sm text-[#4A3515] placeholder-[#B5A593] outline-none"
                   />
                 </div>
               </div>
 
-              {/* Password */}
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-[#8C7A6B] uppercase tracking-wider block">
-                  PASSWORD
+              {/* Password Field */}
+              <div>
+                <label className="block text-xs font-semibold text-[#5C4015] mb-1.5">
+                  Password
                 </label>
-                <div className="relative">
-                  <Lock className="absolute left-3.5 top-3 w-4 h-4 text-[#8C7A6B]" />
+                <div className="relative flex items-center border border-[#E5BE7E] hover:border-[#D99A26] focus-within:border-[#D99A26] rounded-2xl bg-white p-1.5 transition-all shadow-2xs">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5BE27] to-[#D09009] flex items-center justify-center text-white shrink-0 shadow-xs">
+                    <Lock className="w-4 h-4" />
+                  </div>
                   <input
-                    id="signup-password-input"
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Create a password (min. 6 chars)"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="new-password"
-                    className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#FCF8F2] border border-[#EADCC9] text-[#3C3024] text-xs focus:outline-none focus:border-[#D09009] placeholder:text-[#8C7A6B]"
+                    type={showLoginPassword ? 'text' : 'password'}
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    placeholder="Enter password"
                     required
+                    className="w-full bg-transparent pl-3 pr-2 text-sm text-[#4A3515] placeholder-[#B5A593] outline-none"
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3.5 top-3 text-[#8C7A6B] hover:text-[#3C3024] transition-colors"
+                    onClick={() => setShowLoginPassword(!showLoginPassword)}
+                    className="p-2 text-[#B5A593] hover:text-[#D09009] transition-colors"
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showLoginPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
                   </button>
                 </div>
               </div>
 
-              {/* Sponsor / Referral Code (Prefilled from invite link or optional) */}
-              <div className="space-y-1.5 pt-0.5">
-                <div className="flex items-center justify-between">
-                  <label className="text-[10px] font-bold text-[#8C7A6B] uppercase tracking-wider block">
-                    SPONSOR / INVITATION CODE {referralCode ? '(LINKED)' : '(OPTIONAL)'}
-                  </label>
-                  {referralCode ? (
-                    <span className="text-[10px] font-bold text-[#15803D] flex items-center gap-1">
-                      <Sparkles className="w-3 h-3 text-[#D09009]" />
-                      Invite Linked
-                    </span>
-                  ) : (
-                    <span className="text-[10px] text-[#8C7A6B]">Optional</span>
-                  )}
-                </div>
-                <div className="relative">
-                  <UserCheck className={`absolute left-3.5 top-3 w-4 h-4 ${referralCode ? 'text-[#D09009]' : 'text-[#8C7A6B]'}`} />
-                  <input
-                    id="signup-referral-input"
-                    type="text"
-                    placeholder="e.g. sponsor_username"
-                    value={referralCode}
-                    onChange={(e) => setReferralCode(e.target.value)}
-                    autoComplete="off"
-                    className={`w-full pl-10 pr-3.5 py-2.5 rounded-xl border text-xs font-mono focus:outline-none transition-colors ${
-                      referralCode
-                        ? 'bg-[#FCF8F2] border-[#D09009] text-[#3C3024] font-bold shadow-xs'
-                        : 'bg-[#FCF8F2] border-[#EADCC9] text-[#3C3024] focus:border-[#D09009] placeholder:text-[#8C7A6B]'
-                    }`}
-                  />
-                </div>
-                {referralCode ? (
-                  <p className="text-[10px] text-[#8C7A6B] flex items-center justify-between">
-                    <span>You are joining the affiliate network of <strong className="text-[#D09009] font-mono">@{referralCode}</strong>.</span>
-                    <button
-                      type="button"
-                      onClick={() => setReferralCode('')}
-                      className="text-[10px] text-[#8C7A6B] hover:text-[#B91C1C] underline cursor-pointer ml-2 shrink-0"
-                    >
-                      Clear
-                    </button>
-                  </p>
-                ) : (
-                  <p className="text-[10px] text-[#8C7A6B]">
-                    Enter sponsor's username if you were invited, or leave empty to register directly.
-                  </p>
-                )}
-              </div>
-
-              {/* Submit Button */}
+              {/* Submit Login Button */}
               <button
-                id="create-account-submit-btn"
                 type="submit"
-                className="w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-[#F5BE27] to-[#D09009] hover:from-[#F7C63D] hover:to-[#B87D05] active:scale-[0.98] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition cursor-pointer"
+                className="w-full mt-6 py-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#E59B12] via-[#D38806] to-[#B87707] hover:brightness-105 active:scale-[0.99] text-white font-bold text-base shadow-md shadow-[#D38806]/25 flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
-                <UserPlus className="w-4 h-4" />
-                <span>Create Account</span>
+                <LogIn className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span>Login</span>
               </button>
 
-              <div className="text-center pt-2">
-                <p className="text-xs text-[#8C7A6B]">
-                  Already have an account?{' '}
-                  <button
-                    id="switch-to-login-btn"
-                    type="button"
-                    onClick={() => setMode('login')}
-                    className="text-[#D09009] font-bold hover:underline ml-1"
-                  >
-                    Sign In
-                  </button>
-                </p>
-                <p className="text-[10px] text-[#8C7A6B] mt-2 flex items-center justify-center gap-1 font-medium">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#15803D]" /> 
-                  Instant activation • Zero deposit fees • 256-bit SSL encrypted
-                </p>
-              </div>
-            </form>
-          ) : (
-            /* Sign In Mode: Completely empty by default (no autofill) */
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="text-center mb-4">
-                <span className="text-[10px] font-bold text-[#D09009] tracking-wider uppercase">
-                  WELCOME BACK
-                </span>
-                <h2 className="text-lg font-bold text-[#3C3024] mt-0.5">
-                  Sign In to {settings?.siteName || 'Sikka Poultry Farm'}
-                </h2>
-                <p className="text-xs text-[#8C7A6B] mt-1">
-                  Access your portfolio, daily yields, and account balance.
-                </p>
-              </div>
-
-              {/* Username or Email */}
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-[#8C7A6B] uppercase tracking-wider block">
-                  EMAIL OR USERNAME
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3.5 top-3 w-4 h-4 text-[#8C7A6B]" />
-                  <input
-                    id="login-identifier-input"
-                    type="text"
-                    placeholder="Enter your email or username"
-                    value={loginIdentifier}
-                    onChange={(e) => setLoginIdentifier(e.target.value)}
-                    autoComplete="username"
-                    className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#FCF8F2] border border-[#EADCC9] text-[#3C3024] text-xs focus:outline-none focus:border-[#D09009] placeholder:text-[#8C7A6B]"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Password */}
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-[#8C7A6B] uppercase tracking-wider block">
-                  PASSWORD
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3.5 top-3 w-4 h-4 text-[#8C7A6B]" />
-                  <input
-                    id="login-password-input"
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Enter your password"
-                    value={loginPass}
-                    onChange={(e) => setLoginPass(e.target.value)}
-                    autoComplete="current-password"
-                    className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#FCF8F2] border border-[#EADCC9] text-[#3C3024] text-xs focus:outline-none focus:border-[#D09009] placeholder:text-[#8C7A6B]"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3.5 top-3 text-[#8C7A6B] hover:text-[#3C3024] transition-colors"
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-              </div>
-
-              <button
-                id="sign-in-submit-btn"
-                type="submit"
-                className="w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-[#F5BE27] to-[#D09009] hover:from-[#F7C63D] hover:to-[#B87D05] active:scale-[0.98] text-white font-bold text-xs shadow-xs transition flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <UserCheck className="w-4 h-4" />
-                <span>Sign In</span>
-              </button>
-
-              <div className="text-center pt-2">
-                <p className="text-xs text-[#8C7A6B]">
-                  Don't have an account yet?{' '}
-                  <button
-                    id="switch-to-register-btn"
-                    type="button"
-                    onClick={() => setMode('register')}
-                    className="text-[#D09009] font-bold hover:underline ml-1"
-                  >
-                    Register Now
-                  </button>
-                </p>
+              {/* Don't have an account link */}
+              <div className="text-center text-xs text-[#8C7A6B] pt-2">
+                Don&apos;t have an account?{' '}
+                <button
+                  type="button"
+                  onClick={() => setMode('register')}
+                  className="text-[#D09009] font-bold hover:underline cursor-pointer"
+                >
+                  Register
+                </button>
               </div>
             </form>
           )}
-        </div>
 
-        {/* Quick Demo Login Option */}
-        <div className="flex items-center justify-center px-2 text-xs">
-          <button
-            id="demo-user-quick-login-btn"
-            type="button"
-            onClick={() => {
-              userLogin('yoop1328@gmail.com', 'password123');
-              setCurrentView('dashboard');
-            }}
-            className="inline-flex items-center gap-1.5 text-[#8C7A6B] hover:text-[#D09009] transition py-1.5 px-3 rounded-xl bg-white border border-[#EADCC9] text-[11px] font-bold shadow-xs"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-[#D09009]" />
-            <span>Explore with Demo Account (Investor)</span>
-          </button>
+          {/* REGISTER FORM */}
+          {mode === 'register' && (
+            <form onSubmit={handleRegister} className="mt-6 text-left space-y-3.5">
+              {/* Full Name Field */}
+              <div>
+                <label className="block text-xs font-semibold text-[#5C4015] mb-1.5">
+                  Full Name
+                </label>
+                <div className="relative flex items-center border border-[#E5BE7E] hover:border-[#D99A26] focus-within:border-[#D99A26] rounded-2xl bg-white p-1.5 transition-all shadow-2xs">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5BE27] to-[#D09009] flex items-center justify-center text-white shrink-0 shadow-xs">
+                    <User className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="text"
+                    value={regFullName}
+                    onChange={(e) => setRegFullName(e.target.value)}
+                    placeholder="Enter your full name"
+                    className="w-full bg-transparent pl-3 pr-2 text-sm text-[#4A3515] placeholder-[#B5A593] outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Username Field */}
+              <div>
+                <label className="block text-xs font-semibold text-[#5C4015] mb-1.5">
+                  Username
+                </label>
+                <div className="relative flex items-center border border-[#E5BE7E] hover:border-[#D99A26] focus-within:border-[#D99A26] rounded-2xl bg-white p-1.5 transition-all shadow-2xs">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5BE27] to-[#D09009] flex items-center justify-center text-white shrink-0 shadow-xs">
+                    <UserCheck className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="text"
+                    value={regUsername}
+                    onChange={(e) => setRegUsername(e.target.value)}
+                    placeholder="Choose username"
+                    required
+                    className="w-full bg-transparent pl-3 pr-2 text-sm text-[#4A3515] placeholder-[#B5A593] outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Email Address */}
+              <div>
+                <label className="block text-xs font-semibold text-[#5C4015] mb-1.5">
+                  Email Address
+                </label>
+                <div className="relative flex items-center border border-[#E5BE7E] hover:border-[#D99A26] focus-within:border-[#D99A26] rounded-2xl bg-white p-1.5 transition-all shadow-2xs">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5BE27] to-[#D09009] flex items-center justify-center text-white shrink-0 shadow-xs">
+                    <Mail className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="email"
+                    value={regEmail}
+                    onChange={(e) => setRegEmail(e.target.value)}
+                    placeholder="name@example.com"
+                    required
+                    className="w-full bg-transparent pl-3 pr-2 text-sm text-[#4A3515] placeholder-[#B5A593] outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Phone Number */}
+              <div>
+                <label className="block text-xs font-semibold text-[#5C4015] mb-1.5">
+                  Phone Number
+                </label>
+                <div className="relative flex items-center border border-[#E5BE7E] hover:border-[#D99A26] focus-within:border-[#D99A26] rounded-2xl bg-white p-1.5 transition-all shadow-2xs">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5BE27] to-[#D09009] flex items-center justify-center text-white shrink-0 shadow-xs">
+                    <Phone className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="tel"
+                    value={regPhone}
+                    onChange={(e) => setRegPhone(e.target.value)}
+                    placeholder="03001234567"
+                    className="w-full bg-transparent pl-3 pr-2 text-sm text-[#4A3515] placeholder-[#B5A593] outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Password Field */}
+              <div>
+                <label className="block text-xs font-semibold text-[#5C4015] mb-1.5">
+                  Password
+                </label>
+                <div className="relative flex items-center border border-[#E5BE7E] hover:border-[#D99A26] focus-within:border-[#D99A26] rounded-2xl bg-white p-1.5 transition-all shadow-2xs">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5BE27] to-[#D09009] flex items-center justify-center text-white shrink-0 shadow-xs">
+                    <Lock className="w-4 h-4" />
+                  </div>
+                  <input
+                    type={showRegPassword ? 'text' : 'password'}
+                    value={regPassword}
+                    onChange={(e) => setRegPassword(e.target.value)}
+                    placeholder="At least 6 characters"
+                    required
+                    className="w-full bg-transparent pl-3 pr-2 text-sm text-[#4A3515] placeholder-[#B5A593] outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowRegPassword(!showRegPassword)}
+                    className="p-2 text-[#B5A593] hover:text-[#D09009] transition-colors"
+                  >
+                    {showRegPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Referral Code (Optional) */}
+              <div>
+                <label className="block text-xs font-semibold text-[#5C4015] mb-1.5">
+                  Referral Code (Optional)
+                </label>
+                <div className="relative flex items-center border border-[#E5BE7E] hover:border-[#D99A26] focus-within:border-[#D99A26] rounded-2xl bg-white p-1.5 transition-all shadow-2xs">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5BE27] to-[#D09009] flex items-center justify-center text-white shrink-0 shadow-xs">
+                    <Gift className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="text"
+                    value={regReferral}
+                    onChange={(e) => setRegReferral(e.target.value)}
+                    placeholder="Referrer username"
+                    className="w-full bg-transparent pl-3 pr-2 text-sm text-[#4A3515] placeholder-[#B5A593] outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Submit Register Button */}
+              <button
+                type="submit"
+                className="w-full mt-6 py-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#E59B12] via-[#D38806] to-[#B87707] hover:brightness-105 active:scale-[0.99] text-white font-bold text-base shadow-md shadow-[#D38806]/25 flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                <UserPlus className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span>Registration</span>
+              </button>
+
+              {/* Already have an account link */}
+              <div className="text-center text-xs text-[#8C7A6B] pt-2">
+                Already have an account?{' '}
+                <button
+                  type="button"
+                  onClick={() => setMode('login')}
+                  className="text-[#D09009] font-bold hover:underline cursor-pointer"
+                >
+                  Login
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* Bottom Security Badge Pill matching Screenshot (80) */}
+          <div className="mt-6 py-2.5 px-4 rounded-xl sm:rounded-2xl bg-[#FDF8EE] border border-[#F3E6D0] flex items-center justify-center gap-1.5 text-xs text-[#8C7A6B]">
+            <Shield className="w-3.5 h-3.5 text-[#D09009]" />
+            <span>Secure access to your account</span>
+          </div>
+
         </div>
-      </div>
+      </main>
+
+      {/* Subtle Footer */}
+      <footer className="w-full max-w-4xl mx-auto text-center pt-4 pb-2 text-[11px] text-[#8C7A6B]/80 flex flex-col items-center gap-1">
+        <p>© {new Date().getFullYear()} {siteName}. All rights reserved.</p>
+      </footer>
+
     </div>
   );
 }

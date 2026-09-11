@@ -158,7 +158,7 @@ export function ReferralsView() {
     if (navigator.share) {
       navigator.share({
         title: `Join ${siteTitle}`,
-        text: `Join ${siteTitle} to earn daily returns on poultry savings schemes!`,
+        text: `Join ${siteTitle} to earn daily returns on poultry savings certificates and investment schemes!`,
         url: referralUrl,
       }).catch(() => handleCopy());
     } else {
